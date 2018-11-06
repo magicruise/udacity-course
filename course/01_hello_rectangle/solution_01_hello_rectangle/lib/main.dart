@@ -52,7 +52,7 @@ void main() {
         */
         // body: helloRectangle(),
         body: HelloRectangle(),
-      ), // 위젯의 속성 다음에 반드시 쉼표; 서식 지정에 도움
+      ), // 위젯의 속성 다음에 반드시 쉼표, 서식 지정에 도움
     ),
   );
 }

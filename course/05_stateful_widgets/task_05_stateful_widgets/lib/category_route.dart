@@ -17,11 +17,15 @@ final _backgroundColor = Colors.green[100];
 /// While it is named CategoryRoute, a more apt name would be CategoryScreen,
 /// because it is responsible for the UI at the route's destination.
 // TODO: Make CategoryRoute a StatefulWidget
-class CategoryRoute extends StatelessWidget {
+class CategoryRoute extends StatefulWidget {
   const CategoryRoute();
 
   // TODO: Create State object for the CategoryRoute
+  @override
+  _CategoryRouteState createState() => _CategoryRouteState();
+}
 
+class _CategoryRouteState extends State<CategoryRoute> {
   static const _categoryNames = <String>[
     'Length',
     'Area',
@@ -44,13 +48,30 @@ class CategoryRoute extends StatelessWidget {
     Colors.red,
   ];
 
+  // the list of Categories is saved as art of the State.
+  final _categories = <Category>[]; // instance 변수 이름은 _로 시작?
+
+  @override
+  void initState() {
+    super.initState();
+    for (var i = 0; i < _categoryNames.length; i++) {
+      _categories.add(Category(
+        name: _categoryNames[i],
+        color: _baseColors[i],
+        iconLocation: Icons.cake,
+        units: _retrieveUnitList(_categoryNames[i]),
+      ));
+    }
+  }
+
   /// Makes the correct number of rows for the list view.
   ///
   /// For portrait, we use a [ListView].
-  Widget _buildCategoryWidgets(List<Widget> categories) {
+  //Widget _buildCategoryWidgets(List<Widget> categories) {
+  Widget _buildCategoryWidgets() {
     return ListView.builder(
-      itemBuilder: (BuildContext context, int index) => categories[index],
-      itemCount: categories.length,
+      itemBuilder: (BuildContext context, int index) => _categories[index], //categories[index],
+      itemCount: _categories.length, //categories.length,
     );
   }
 
@@ -72,6 +93,7 @@ class CategoryRoute extends StatelessWidget {
     // the list at initialization (in initState()).
     // This way, you also don't have to pass in the list of categories to
     // _buildCategoryWidgets()
+    /*
     final categories = <Category>[];
 
     for (var i = 0; i < _categoryNames.length; i++) {
@@ -82,11 +104,12 @@ class CategoryRoute extends StatelessWidget {
         units: _retrieveUnitList(_categoryNames[i]),
       ));
     }
+    */
 
     final listView = Container(
       color: _backgroundColor,
       padding: EdgeInsets.symmetric(horizontal: 8.0),
-      child: _buildCategoryWidgets(categories),
+      child: _buildCategoryWidgets(),
     );
 
     final appBar = AppBar(
@@ -108,3 +131,4 @@ class CategoryRoute extends StatelessWidget {
     );
   }
 }
+

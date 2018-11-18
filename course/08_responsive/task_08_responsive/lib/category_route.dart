@@ -27,6 +27,10 @@ class CategoryRoute extends StatefulWidget {
 class _CategoryRouteState extends State<CategoryRoute> {
   Category _defaultCategory;
   Category _currentCategory;
+  // Widgets are supposed to be deeply immutable objects. Wecan update and edit
+  // _categories as we build our app, and when we pass it into a widget's
+  // 'children' property, we call .toList() on it.
+  // For more details, see htps://github.com/dart-lang/sdk/issues/27755
   final _categories = <Category>[];
   static const _categoryNames = <String>[
     'Length',
@@ -103,16 +107,30 @@ class _CategoryRouteState extends State<CategoryRoute> {
   /// device is portrait or landscape.
   ///
   /// For portrait, we use a [ListView]. For landscape, we use a [GridView].
-  Widget _buildCategoryWidgets() {
-    return ListView.builder(
-      itemBuilder: (BuildContext context, int index) {
-        return CategoryTile(
-          category: _categories[index],
-          onTap: _onCategoryTap,
-        );
-      },
-      itemCount: _categories.length,
-    );
+  //Widget _buildCategoryWidgets() {
+  Widget _buildCategoryWidgets(Orientation deviceOrientation) {
+    if (deviceOrientation == Orientation.portrait) {
+      return ListView.builder(
+        itemBuilder: (BuildContext context, int index) {
+          return CategoryTile(
+            category: _categories[index],
+            onTap: _onCategoryTap,
+          );
+        },
+        itemCount: _categories.length,
+      );
+    } else { // build a landscape view for our category route
+      return GridView.count( // it’s a grid view and uses the available space more efficiently than a listView.
+        crossAxisCount: 2, // The GridView should have two items per row,
+        childAspectRatio: 3.0, // and have an aspect ratio of 3.0.
+        children: _categories.map((Category c) { // ??
+          return CategoryTile(
+            category: c,
+            onTap: _onCategoryTap,
+          );
+        }).toList(),
+      );
+    }
   }
 
   /// Returns a list of mock [Unit]s.
@@ -128,13 +146,28 @@ class _CategoryRouteState extends State<CategoryRoute> {
 
   @override
   Widget build(BuildContext context) {
+    // Based on the device size, figure out how to best lay out the list
+    // You can also use MediaQuery.of(context).size to calculate the orientation
+    
+    /*
+    if (_categories.isEmpty) {
+      return Centre(
+        child: Container(
+          height: 1800.0,
+          width: 180.0,
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+    */
+    assert(debugCheckHasMediaQuery(context));
     final listView = Padding(
       padding: EdgeInsets.only(
         left: 8.0,
         right: 8.0,
         bottom: 48.0,
       ),
-      child: _buildCategoryWidgets(),
+      child: _buildCategoryWidgets(MediaQuery.of(context).orientation),
     );
 
     return Backdrop(

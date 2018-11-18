@@ -196,6 +196,8 @@ class _UnitConverterState extends State<UnitConverter> {
           // accepts numbers and calls the onChanged property on update.
           // You can read more about it here: https://flutter.io/text-input
           TextField(
+            key: _inputKey, // When you switch from portrait to landscape mode,
+                            // if a user already has entered a value, it should remain in the input TextField.
             style: Theme.of(context).textTheme.display1,
             decoration: InputDecoration(
               labelStyle: Theme.of(context).textTheme.display1,
@@ -247,6 +249,11 @@ class _UnitConverterState extends State<UnitConverter> {
     );
 
     // TODO: Use a ListView instead of a Column
+    // This ensures that you converter is viewable on all screens,
+    // and is scrollable when the screen is too small to fit it all.
+    // This also removes the RenderFlex exception while the front panel of the Backdrop is being opened and closed.
+    // (alternatively, you could use a SingleChildScrollView).
+    /*
     final converter = Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -255,12 +262,84 @@ class _UnitConverterState extends State<UnitConverter> {
         output,
       ],
     );
+    */
+    final converter = ListView(
+      children: <Widget>[
+        input,
+        arrows,
+        output,
+      ],
+    );
 
     // TODO: Use an OrientationBuilder to add a width to the unit converter
     // in landscape mode
+    // Based on the orientation of the parent widget, figure out how to best
+    // lay out our converter.
+
+    /*
     return Padding(
       padding: _padding,
       child: converter,
     );
+    */
+    return Padding(
+      padding: _padding,
+      child: OrientationBuilder(
+        builder: (BuildContext context, Orientation orientation) {
+          if (orientation == Orientation
+              .portrait) { // Display it at full size in portrait mode.
+            return converter;
+            /*
+            return SingleChildScrollView(
+              child: converter,
+            );
+            */
+          } else { // Display the unit converter at 450.0 width, centered, in landscape mode.
+            return Center(
+              child: Container(
+                width: 450.0,
+                child: converter,
+              ),
+            );
+            /*
+            return SingleChildScrollView(
+              child: Center(
+                child: Container(
+                  width: 450.0,
+                  child: converter,
+                ),
+              ),
+            );
+            */
+          }
+        },
+      ),
+    );
+
+    /* Layout Builder
+    // Based on the orientation of the parent widget, figure out how to best
+    // lay out our converter.
+    return Padding(
+       padding: _padding,
+       child: LayoutBuilder(
+       builder: (BuildContext context, BoxConstraints consttraints) {
+         if (constraints.maxHeight > constraints.maxWidth) {
+           return SingleChildScrollView(
+             child: converter,
+           );
+         } else {
+           return SingleChildScrollView(
+               child: Center(
+                   child: Container(
+                     width: 450.0,
+                     child:converter,
+                   )
+               )
+           );
+         }
+       }
+    ),
+    );
+    */
   }
 }

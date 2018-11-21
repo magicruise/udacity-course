@@ -37,6 +37,7 @@ class _CategoryRouteState extends State<CategoryRoute> {
   // For more details, see https://github.com/dart-lang/sdk/issues/27755
   final _categories = <Category>[];
   // TODO: Remove _categoryNames as they will be retrieved from the JSON asset
+  /*
   static const _categoryNames = <String>[
     'Length',
     'Area',
@@ -47,6 +48,8 @@ class _CategoryRouteState extends State<CategoryRoute> {
     'Energy',
     'Currency',
   ];
+  */
+
   static const _baseColors = <ColorSwatch>[
     ColorSwatch(0xFF6AB7A8, {
       'highlight': Color(0xFF6AB7A8),
@@ -85,6 +88,7 @@ class _CategoryRouteState extends State<CategoryRoute> {
 
   // TODO: Remove the overriding of initState(). Instead, we use
   // didChangeDependencies()
+  /*
   @override
   void initState() {
     super.initState();
@@ -101,31 +105,59 @@ class _CategoryRouteState extends State<CategoryRoute> {
       _categories.add(category);
     }
   }
+  */
 
   // TODO: Uncomment this out. We use didChangeDependencies() so that we can
   // wait for our JSON asset to be loaded in (async).
-  //  @override
-  //  Future<void> didChangeDependencies() async {
-  //    super.didChangeDependencies();
-  //    // We have static unit conversions located in our
-  //    // assets/data/regular_units.json
-  //    if (_categories.isEmpty) {
-  //      await _retrieveLocalCategories();
-  //    }
-  //  }
+    @override
+    Future<void> didChangeDependencies() async {
+      super.didChangeDependencies();
+      // We have static unit conversions located in our
+      // assets/data/regular_units.json
+      if (_categories.isEmpty) {
+        await _retrieveLocalCategories();
+      }
+    }
 
   /// Retrieves a list of [Categories] and their [Unit]s
   Future<void> _retrieveLocalCategories() async {
     // Consider omitting the types for local variables. For more details on Effective
     // Dart Usage, see https://www.dartlang.org/guides/language/effective-dart/usage
+    // Loading Assets into app
     final json = DefaultAssetBundle
         .of(context)
-        .loadString('assets/data/regular_units.json');
+        .loadString('assets/data/goofy_units.json');
+    
+    // Pasing the JSON data -> import the Dart Convert package to help us with this.
     final data = JsonDecoder().convert(await json);
     if (data is! Map) {
       throw ('Data retrieved from API is not a Map');
     }
     // TODO: Create Categories and their list of Units, from the JSON asset
+    var categoryIndex = 0;
+
+    // Mapping each unit to a unit class and mapping each category to a category class.
+    data.keys.forEach((key) { // need study more about JSON!
+      final List<Unit> units =
+      data[key].map<Unit>((dynamic data) => Unit.fromJson(data)).toList();
+
+      // Generally, data doesn’t have to be in JSON format,
+      // It could be in comma-separated values or regular text
+      var category = Category(
+        name: key,
+        units: units,
+        color: _baseColors[categoryIndex],
+        iconLocation: Icons.cake,
+      );
+
+      setState(() {
+        if (categoryIndex == 0) {
+          _defaultCategory = category;
+        }
+        _categories.add(category);
+      });
+      categoryIndex += 1;
+    });
   }
 
   /// Function to call when a [Category] is tapped.
@@ -166,6 +198,7 @@ class _CategoryRouteState extends State<CategoryRoute> {
 
   // TODO: Delete this function; instead, read in the units from the JSON asset
   // inside _retrieveLocalCategories()
+  /*
   /// Returns a list of mock [Unit]s.
   List<Unit> _retrieveUnitList(String categoryName) {
     // when the app first starts up
@@ -177,6 +210,7 @@ class _CategoryRouteState extends State<CategoryRoute> {
       );
     });
   }
+  */
 
   @override
   Widget build(BuildContext context) {

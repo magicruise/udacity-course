@@ -1,0 +1,50 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf600
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 Package: A library of functions that can be shared easily\
+\
+Plugin: A package that integrates with device APIs (e.g. battery, Wi-Fi, camera).\
+\
+In order to use packages, we have to specify our dependencies in a pubspec.yaml file which contains metadata for our app.\
+Information that you include into pubspec include the name, version, description, authors, dependencies, and more.\
+For flutter applications, a dependency would be the flutter sdk\
+We can also specify assets and fonts inside pubspec.\
+\
+Name: unit_converter\
+Description: A unit converter that takes input\
+\
+Dependencies:\
+	flutter:\
+		sdk: flutter\
+\
+dev_dependencies:\
+	flutter_test:\
+		sdk: flutter\
+\
+flutter:\
+	uses-material-design: true\
+	assets:\
+		- assets/data/regular_units.json \
+		- \'85\
+\
+When you make changes to pubspec.yaml, you\'92ll want to run a \'91flutter packages get\'92 from the command line if your editor doesn\'92t automatically do it for you.\
+This gets or updates the required packages that your app depends on.\
+pubcreates.packages file that maps from package names to the actual URIs for these packages.\
+Even though you import a large package, only the functions you use end up being compiled down to code in release mode.\
+=> Tree-shaking: Process where redundant and unused code is removed during code compilation.\
+This way, you don\'92t need to specify what specific classes you want to import\
+Such as, import \'91\ul material.dart\ulnone \'92 show \ul Container\ulnone ;\
+\
+\'97\'97\'97\'97\'97\
+\
+Asset: File that is bundled and deployed with your app, and is accessible and read-only at runtime.\
+Asset Bundle: Archive of files that is created during a build. It can be read by the app at runtime.\
+rootBundle: Gives you access to the main asset bundle.\
+DefaultAssetBundle: Retrieves asset bundle for the current BuildContext. You can substitute in different assets at runtime.(This allows a parent widget to substitute in different asset bundles at runtime for localisation and for running tests.)\
+}

@@ -27,10 +27,13 @@ class UnitConverterApp extends StatelessWidget {
       title: 'Unit Converter',
       theme: ThemeData(
         // TODO: fill in the fontFamily property
+        fontFamily: 'Railway',
+        // Remember, by using theme.of(context),
+        // we’re able to retrieve the master theme and further add to it if we wish. ??
         textTheme: Theme.of(context).textTheme.apply(
-              bodyColor: Colors.black,
-              displayColor: Colors.grey[600],
-            ),
+          bodyColor: Colors.black,
+          displayColor: Colors.grey[600],
+        ),
         // This colors the [InputOutlineBorder] when it is selected
         primaryColor: Colors.grey[500],
         textSelectionHandleColor: Colors.green[500],

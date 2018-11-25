@@ -63,11 +63,44 @@ class CategoryTile extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.all(16.0),
                   // TODO: Use an Image instead of an Icon
-                  child: Icon(
+                  /*child: Icon(
                     category.iconLocation,
                     size: 60.0,
                   ),
+                  */
+                  child: Image.asset(category.iconLocation),
                 ),
+                // replace our placeholder material icon with our custom icons
+                // whose asset location is denoted by iconLocation
+
+                // child: category.iconLocation != null ? Image.asset(category.iconLocation) : null,
+
+                // The flutter image widget has separate constructors based on
+                // whether your path points to an asset, local file or from the Web.
+
+                // for the unitConverter, we use the Image.asset constructor
+
+                // You can also use the Image.file constructor
+                // to pick an image from a specific file location on your device,
+                // such as for a photo app.
+
+                // If you know you’ll be using an image from the net,
+                // you’d use the Image.network constructor.
+
+                // Ways to lay out your image include the fit property and aspect ratio widget.
+                // With fit, you can fit to an image’s width or height
+                // or compress an image into a container of space.
+                // Also use an aspect ratio widget to ensure your image remains a certain ratio.
+                /*
+                child: category.iconLocation != null ?
+                  AspectRatio(
+                    aspectRatio: 3.0,
+                    child: Image.asset(category.iconLocation,
+                      width: 100.0,
+                      fit: BoxFit.fitWidth
+                    ),
+                  ) : null,
+                */
                 Center(
                   child: Text(
                     category.name,
